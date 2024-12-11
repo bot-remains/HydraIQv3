@@ -41,6 +41,11 @@ def process_page_as_pdf(page_pdf):
         for document in loader.lazy_load():
             documents.append(document)
 
+        uuids = [str(uuid4()) for _ in range(len(documents))]
+        vector_store.add_documents(documents=documents, ids=uuids)
+        documents.clear()
+
+
     finally:
         if os.path.exists(temp_file_path):
             os.remove(temp_file_path)
@@ -67,6 +72,18 @@ def split_and_process_pdf(input_pdf_path):
     except Exception as e:
         print(f"An error occurred: {e}")
 
-split_and_process_pdf(os.getenv("INPUT_DIR"))
-uuids = [str(uuid4()) for _ in range(len(documents))]
-vector_store.add_documents(documents=documents, ids=uuids)
+def get_files():
+    folder_path = os.getenv('INPUT_DIR')
+
+    entries = os.listdir(folder_path)
+
+    files = [f for f in entries if os.path.isfile(os.path.join(folder_path, f))]
+
+    return files
+
+def do_the_thing(files):
+    for file in files:
+        split_and_process_pdf(os.path.join(os.getenv("INPUT_DIR"), file))
+
+files = get_files()
+do_the_thing(files)
