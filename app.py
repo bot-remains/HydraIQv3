@@ -70,12 +70,12 @@ def disp(session_id):
     print(f"Chat History: {chat_history}")
     print(f"User Input: {user_input}")
 
-    if is_related_to_groundwater(user_input):
-        print("Input is related to groundwater.")
-        response = chatWithChain(user_input, chat_history)
-    else:
-        print("Input is NOT related to groundwater.")
-        response = non_groundwater_chain(user_input, chat_history.messages)
+    # if is_related_to_groundwater(user_input):
+    #     print("Input is related to groundwater.")
+    response = chatWithChain(user_input, chat_history)
+    # else:
+    #     print("Input is NOT related to groundwater.")
+    #     response = non_groundwater_chain(user_input, chat_history.messages)
 
     return Response(response, content_type='text/plain')
 

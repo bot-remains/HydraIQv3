@@ -13,15 +13,7 @@ multiquery_generation_chain = ( multiquery_generation_prompt | llm | StrOutputPa
 rag_chain = (
     {
         "question": itemgetter("question"),
-        "context":
-            {
-                "question": itemgetter("question"),
-                "standalone_question": itemgetter("question") |  standalone_question_chain
-            }
-            | multiquery_generation_chain
-            | retriever.map()
-            | reciprocal_rank_fusion
-            | format_docs,
+        "context": itemgetter("question") | standalone_question_chain | retriever | format_docs,
         "chat_history": itemgetter("chat_history")
     }
     | answer_prompt
