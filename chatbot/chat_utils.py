@@ -14,13 +14,14 @@ def fetchChatHistory(user_id, session_id):
 
 def chatWithChain(question, chat_history):
     chat_history.add_user_message(question)
-    # response = rag_chain.invoke({"question": question, "chat_history": chat_history.messages})
-    print("Streamming response...\n")
-    chunks = []
-    for chunk in rag_chain.stream({"question": question, "chat_history": chat_history.messages}):
-        yield chunk
-        chunks.append(chunk)
-    print("\n\nStreamming response done.")
-    response = "".join(chunks)
+    response = rag_chain.invoke({"question": question, "chat_history": chat_history.messages})
+    # print("Streamming response...\n")
+    return response
+    # chunks = []
+    # for chunk in rag_chain.stream({"question": question, "chat_history": chat_history.messages}):
+    #     yield chunk
+    #     chunks.append(chunk)
+    # print("\n\nStreamming response done.")
+    # response = "".join(chunks)
     chat_history.add_ai_message(response)
-    print("Chat history updated.")
+    # print("Chat history updated.")

@@ -57,7 +57,7 @@ def non_groundwater_chain(user_input, chat_history):
     return fallback_chain.invoke({"question": user_input, "chat_history": chat_history})
 
 
-@app.route("/chat/<session_id>", methods = ['GET', 'POST'])
+@app.route("/chat/<session_id>", methods=['GET', 'POST'])
 def disp(session_id):
     input = request.get_json(force=True)
     user_id = input.get('user_id')
@@ -67,13 +67,18 @@ def disp(session_id):
         return jsonify({'error': 'No user input provided'}), 400
 
     chat_history = fetchChatHistory(user_id, session_id)
+    print(f"Chat History: {chat_history}")
+    print(f"User Input: {user_input}")
 
     if is_related_to_groundwater(user_input):
-        response = chatWithChain(user_input, chat_history.messages)
+        print("Input is related to groundwater.")
+        response = chatWithChain(user_input, chat_history)
     else:
+        print("Input is NOT related to groundwater.")
         response = non_groundwater_chain(user_input, chat_history.messages)
-        # Ensure both args are passed here
+
     return Response(response, content_type='text/plain')
+
 
 
 @app.route("/chat/get-history/<session_id>", methods=['GET', 'POST'])
