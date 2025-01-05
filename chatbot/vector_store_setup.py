@@ -7,4 +7,4 @@ from chatbot.llm_setup import embeddings
 pc = Pinecone(api_key=PINECONE_API_KEY)
 index = pc.Index(PINECONE_INDEX_NAME)
 vector_store = PineconeVectorStore(index=index, embedding=embeddings)
-retriever = vector_store.as_retriever(search_kwargs={"k": 25})
+retriever = vector_store.as_retriever(search_kwargs={"k": 3})

@@ -5,8 +5,10 @@ from firebase_admin import credentials, firestore
 
 dotenv.load_dotenv(".env")
 
-cred = credentials.Certificate("hydraq-chat-history.json")
-firebase_admin.initialize_app(cred)
+
+if not firebase_admin._apps:
+    cred = credentials.Certificate("hydraq-chat-history.json")
+    firebase_admin.initialize_app(cred)
 client = firestore.client()
 
 CHAT_MODEL = os.getenv("CHAT_MODEL")
